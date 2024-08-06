@@ -28,6 +28,7 @@ def __find_node(name, structure) -> tuple:
     for k, v in structure.items():
         if k[0] == name:
             return k
+
     raise Exception("Could not find node!")
 
 
@@ -104,8 +105,10 @@ def find_balancing_weight(data) -> int:
 
     result_list = sorted(list(result))
     balancing_weight = abs(result_list[0] - result_list[1])
+
     # Effectively means, if the unbalanced node is larger
-    # than the other nodes, take weight away.
+    # than the other nodes, take weight away to balance it
+    # i.e. make the balancing weight negative
     if dup == result_list[0]:
         balancing_weight *= -1
 
