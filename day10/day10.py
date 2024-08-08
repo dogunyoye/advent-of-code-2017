@@ -51,11 +51,10 @@ def find_knot_hash(data) -> str:
 
             idx += length + skip
             skip += 1
-
         rounds -= 1
 
     dense_hash = []
-    hash_string = ""
+    knot_hash = ""
 
     for i in range(0, len(nums), 16):
         block = nums[i:i+16]
@@ -68,9 +67,9 @@ def find_knot_hash(data) -> str:
         s = format(dense_hash[i], 'x')
         if len(s) == 1:
             s = '0' + s
-        hash_string += s
+        knot_hash += s
 
-    return hash_string
+    return knot_hash
 
 
 def main() -> int:
