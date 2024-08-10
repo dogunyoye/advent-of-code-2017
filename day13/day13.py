@@ -93,11 +93,31 @@ def calculate_smallest_delay_remain_undetected(data) -> int:
                 return delay
 
 
+# optimised solution based on:
+# https://gist.github.com/snarkbait/e6812b39ce04af2c18db9dfd95e1ea10
+def calculate_smallest_delay_remain_undetected_optimised(data) -> int:
+    firewall, _ = __build_firewall(data)
+    delay = 2
+
+    while True:
+        caught = False
+        for k, v in firewall.items():
+            if ((k + delay) % ((v[0] - 1) * 2)) == 0:
+                caught = True
+                break
+
+        if not caught:
+            break
+        delay += 2
+
+    return delay
+
+
 def main() -> int:
     with open(DATA) as f:
         data = f.read()
         print("Part 1: " + str(calculate_severity(data)))
-        print("Part 2: " + str(calculate_smallest_delay_remain_undetected(data)))
+        print("Part 2: " + str(calculate_smallest_delay_remain_undetected_optimised(data)))
     return 0
 
 
