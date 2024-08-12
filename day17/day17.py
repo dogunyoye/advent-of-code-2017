@@ -38,6 +38,8 @@ def find_number_after_value_zero_when_fifty_million_is_inserted(data) -> int:
     # we care about is which position (insertion_point) every number
     # ends up in. Ofcourse, we're not actually going to store every
     # number, just whatever number is at index 0 (always 0) and index 1
+    #
+    # Inspiration: https://observablehq.com/@jwolondon/advent-of-code-2017-day-17
     while number != 50_000_000:
         insertion_point = ((insertion_point + spins) % number) + 1
         if insertion_point == 1:
