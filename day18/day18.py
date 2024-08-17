@@ -91,7 +91,7 @@ def _jgz(instruction_pointer, instructions_len, registers, value0, value1) -> in
         v1 = int(value1)
 
     if v0 > 0:
-        return (instruction_pointer + v1) % instructions_len
+        return instruction_pointer + v1
     return instruction_pointer + 1
 
 
@@ -109,7 +109,7 @@ def find_value_of_recovered_frequency(data) -> int:
     registers = __initialise_registers(data)
     instructions = data.splitlines()
     instruction_pointer = 0
-    while instruction_pointer < len(data):
+    while instruction_pointer < len(instructions):
         parts = instructions[instruction_pointer].split(" ")
         instruction = parts[0]
         if instruction == "snd":
@@ -126,7 +126,7 @@ def find_value_of_recovered_frequency(data) -> int:
         elif instruction == "mod":
             _mod(registers, parts[1], parts[2])
         elif instruction == "jgz":
-            instruction_pointer = _jgz(instruction_pointer, len(data), registers, parts[1], parts[2])
+            instruction_pointer = _jgz(instruction_pointer, len(instructions), registers, parts[1], parts[2])
             continue
         instruction_pointer += 1
 
