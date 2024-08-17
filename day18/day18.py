@@ -35,7 +35,7 @@ class Program(object):
                 _mod(self.registers, parts[1], parts[2])
             elif instruction == "jgz":
                 self.instruction_pointer = (
-                    _jgz(self.instruction_pointer, len(self.instructions), self.registers, parts[1], parts[2]))
+                    _jgz(self.instruction_pointer, self.registers, parts[1], parts[2]))
                 continue
             self.instruction_pointer += 1
         raise Exception("Program out of bounds")
@@ -79,7 +79,7 @@ def _rcv() -> int:
     return last_played
 
 
-def _jgz(instruction_pointer, instructions_len, registers, value0, value1) -> int:
+def _jgz(instruction_pointer, registers, value0, value1) -> int:
     if value0.isalpha():
         v0 = registers[value0]
     else:
@@ -126,7 +126,7 @@ def find_value_of_recovered_frequency(data) -> int:
         elif instruction == "mod":
             _mod(registers, parts[1], parts[2])
         elif instruction == "jgz":
-            instruction_pointer = _jgz(instruction_pointer, len(instructions), registers, parts[1], parts[2])
+            instruction_pointer = _jgz(instruction_pointer, registers, parts[1], parts[2])
             continue
         instruction_pointer += 1
 
