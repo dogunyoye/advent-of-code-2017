@@ -140,10 +140,9 @@ def __enhancement_map(data) -> dict:
 
 
 def __create_initial_image() -> dict:
-    initial_image = {(0, 0): '.', (0, 1): '#', (0, 2): '.',
-                     (1, 0): '.', (1, 1): '.', (1, 2): '#',
-                     (2, 0): '#', (2, 1): '#', (2, 2): '#'}
-    return initial_image
+    return {(0, 0): '.', (0, 1): '#', (0, 2): '.',
+            (1, 0): '.', (1, 1): '.', (1, 2): '#',
+            (2, 0): '#', (2, 1): '#', (2, 2): '#'}
 
 
 # Trivial for part 1, slow for part 2 (but will complete in a reasonable
