@@ -5,7 +5,7 @@ from collections import Counter
 DATA = os.path.join(os.path.dirname(__file__), 'day21.txt')
 
 
-def print_image(image):
+def __print_image(image):
     limit = max(image.keys(), key=lambda item: item[1])[1] + 1
     for i in range(0, limit):
         line = ""
@@ -14,7 +14,7 @@ def print_image(image):
         print(line)
 
 
-def flip(image) -> dict:
+def __flip(image) -> dict:
     flipped = {}
     lines = []
     limit = max(image.keys(), key=lambda item: item[1])[1] + 1
@@ -31,7 +31,7 @@ def flip(image) -> dict:
     return flipped
 
 
-def rotate(image) -> dict:
+def __rotate(image) -> dict:
     rotated = {}
     lines = []
     limit = max(image.keys(), key=lambda item: item[1])[1] + 1
@@ -48,17 +48,17 @@ def rotate(image) -> dict:
     return rotated
 
 
-def transformations(image) -> list:
+def __transformations(image) -> list:
     transforms = [copy.deepcopy(image)]
     for _ in range(0, 3):
-        image = rotate(image)
+        image = __rotate(image)
         transforms.append(copy.deepcopy(image))
 
-    image = flip(rotate(image))
+    image = __flip(__rotate(image))
     transforms.append(copy.deepcopy(image))
 
     for _ in range(0, 3):
-        image = rotate(image)
+        image = __rotate(image)
         transforms.append(copy.deepcopy(image))
 
     return transforms
@@ -157,7 +157,7 @@ def __number_of_pixels_on_after_n_iterations(data, iterations) -> int:
         split_image, rows = __split_image(image)
         for s in split_image:
             found = False
-            for tt in transformations(s):
+            for tt in __transformations(s):
                 sub_image_string = __image_string(tt)
                 if sub_image_string in enhancements:
                     subsections.append(enhancements[sub_image_string])
