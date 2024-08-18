@@ -139,13 +139,13 @@ def find_strength_of_the_longest_bridge(data) -> int:
             __build_bridge(component, bridge, components_copy, configs)
 
     for config in configs:
-        additional_ports = 0
+        additional_components = 0
         ports = __config_ports(config)
         for k in symmetrical_components.keys():
             if k in ports:
-                additional_ports += 1
+                additional_components += 1
 
-        config_length = len(config) + additional_ports
+        config_length = len(config) + additional_components
 
         if config_length >= longest:
             longest = config_length
