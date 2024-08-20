@@ -48,21 +48,19 @@ def find_program_order(data) -> str:
 
 
 def find_program_order_after_a_billion_dances(data) -> str:
-    runs = 1_000_000_000
+    runs = 0
     one_dance = find_program_order(data)
     current_dance = one_dance
     dances = [one_dance]
-    cycle = 0
 
-    while runs != 0:
-        runs -= 1
+    while runs != 1_000_000_000:
+        runs += 1
         current_dance = __dance(list(current_dance), data)
         if current_dance == one_dance:
-            cycle = 1_000_000_000 - runs
-            break
+            return dances[(1_000_000_000 % runs) - 1]
         dances.append(current_dance)
 
-    return dances[(1_000_000_000 % cycle) - 1]
+    raise Exception("No solution found!")
 
 
 def main() -> int:
