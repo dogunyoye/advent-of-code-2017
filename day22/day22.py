@@ -19,48 +19,34 @@ def __build_grid(lines) -> dict:
     return grid
 
 
+# Directions in clockwise order, so a turn is a rotation around this tuple.
+DIRECTIONS = (Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST)
+MOVEMENTS = {
+    Direction.NORTH: (-1, 0),
+    Direction.EAST: (0, 1),
+    Direction.SOUTH: (1, 0),
+    Direction.WEST: (0, -1),
+}
+
+
 def __turn_left(facing) -> Direction:
-    if facing == Direction.NORTH:
-        return Direction.WEST
-    elif facing == Direction.EAST:
-        return Direction.NORTH
-    elif facing == Direction.SOUTH:
-        return Direction.EAST
-    elif facing == Direction.WEST:
-        return Direction.SOUTH
+    index = DIRECTIONS.index(facing)
+    return DIRECTIONS[(index - 1) % len(DIRECTIONS)]
 
 
 def __turn_right(facing) -> Direction:
-    if facing == Direction.NORTH:
-        return Direction.EAST
-    elif facing == Direction.EAST:
-        return Direction.SOUTH
-    elif facing == Direction.SOUTH:
-        return Direction.WEST
-    elif facing == Direction.WEST:
-        return Direction.NORTH
+    index = DIRECTIONS.index(facing)
+    return DIRECTIONS[(index + 1) % len(DIRECTIONS)]
 
 
 def __reverse(facing) -> Direction:
-    if facing == Direction.NORTH:
-        return Direction.SOUTH
-    elif facing == Direction.EAST:
-        return Direction.WEST
-    elif facing == Direction.SOUTH:
-        return Direction.NORTH
-    elif facing == Direction.WEST:
-        return Direction.EAST
+    index = DIRECTIONS.index(facing)
+    return DIRECTIONS[(index + 2) % len(DIRECTIONS)]
 
 
-def __move(current_position, facing) -> (int, int):
-    if facing == Direction.NORTH:
-        return current_position[0] - 1, current_position[1]
-    elif facing == Direction.EAST:
-        return current_position[0], current_position[1] + 1
-    elif facing == Direction.SOUTH:
-        return current_position[0] + 1, current_position[1]
-    elif facing == Direction.WEST:
-        return current_position[0], current_position[1] - 1
+def __move(current_position, facing) -> tuple[int, int]:
+    row, column = MOVEMENTS[facing]
+    return current_position[0] + row, current_position[1] + column
 
 
 def find_number_of_bursts_that_infect_a_node(data) -> int:
