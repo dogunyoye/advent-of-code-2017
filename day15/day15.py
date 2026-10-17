@@ -1,55 +1,54 @@
 import os.path
-from collections import deque
 
 DATA = os.path.join(os.path.dirname(__file__), 'day15.txt')
 
+GENERATOR_A_FACTOR = 16807
+GENERATOR_B_FACTOR = 48271
+MODULUS = 2147483647
+LOW_16_BITS_MASK = 0xFFFF
 
-def calculate_final_count(data) -> int:
+TOTAL_PAIRS = 40_000_000
+PART_TWO_MULTIPLE_A = 4
+PART_TWO_MULTIPLE_B = 8
+
+
+def __seeds(data) -> tuple[int, int]:
     lines = data.splitlines()
-    gen_a = int(lines[0].split(" ")[4])
-    gen_b = int(lines[1].split(" ")[4])
-    runs = 40_000_000
+    return int(lines[0].split(" ")[-1]), int(lines[1].split(" ")[-1])
+
+
+def __generator(seed, factor, multiple=1):
+    value = seed
+    while True:
+        value = (value * factor) % MODULUS
+        if value % multiple == 0:
+            yield value
+
+
+def __count_matching_pairs(data, pairs, multiple_a=1, multiple_b=1) -> int:
+    seed_a, seed_b = __seeds(data)
+    generator_a = __generator(seed_a, GENERATOR_A_FACTOR, multiple_a)
+    generator_b = __generator(seed_b, GENERATOR_B_FACTOR, multiple_b)
+
     count = 0
-
-    while runs != 0:
-        gen_a = (gen_a * 16807) % 2147483647
-        gen_b = (gen_b * 48271) % 2147483647
-
-        gen_a_binary = format(gen_a, 'b')
-        gen_b_binary = format(gen_b, 'b')
-
-        if gen_a_binary[len(gen_a_binary) - 16:] == gen_b_binary[len(gen_b_binary) - 16:]:
+    for _ in range(pairs):
+        match = (next(generator_a) & LOW_16_BITS_MASK) == (
+            next(generator_b) & LOW_16_BITS_MASK
+        )
+        if match:
             count += 1
 
-        runs -= 1
     return count
+
+
+def calculate_final_count(data) -> int:
+    return __count_matching_pairs(data, TOTAL_PAIRS)
 
 
 def calculate_final_count_part_two(data) -> int:
-    lines = data.splitlines()
-    gen_a = int(lines[0].split(" ")[4])
-    gen_b = int(lines[1].split(" ")[4])
-    gen_a_queue, gen_b_queue = deque(), deque()
-    runs = 5_000_000
-    count = 0
-
-    while runs != 0:
-        gen_a = (gen_a * 16807) % 2147483647
-        gen_b = (gen_b * 48271) % 2147483647
-
-        if gen_a % 4 == 0:
-            gen_a_queue.append(format(gen_a, 'b'))
-        if gen_b % 8 == 0:
-            gen_b_queue.append(format(gen_b, 'b'))
-
-        if len(gen_a_queue) > 0 and len(gen_b_queue) > 0:
-            gen_a_binary = gen_a_queue.popleft()
-            gen_b_binary = gen_b_queue.popleft()
-            if gen_a_binary[len(gen_a_binary) - 16:] == gen_b_binary[len(gen_b_binary) - 16:]:
-                count += 1
-            runs -= 1
-
-    return count
+    return __count_matching_pairs(
+        data, 5_000_000, PART_TWO_MULTIPLE_A, PART_TWO_MULTIPLE_B
+    )
 
 
 def main() -> int:
