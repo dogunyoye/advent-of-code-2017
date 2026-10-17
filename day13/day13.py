@@ -3,7 +3,7 @@ import os.path
 DATA = os.path.join(os.path.dirname(__file__), 'day13.txt')
 
 
-def __build_firewall(data) -> (dict, tuple):
+def __build_firewall(data) -> tuple[dict, tuple]:
     firewall = {}
     for line in data.splitlines():
         parts = line.split(": ")

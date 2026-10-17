@@ -5,7 +5,7 @@ import sys
 DATA = os.path.join(os.path.dirname(__file__), 'day08.txt')
 
 
-def __evaluate_expressions(data) -> (dict, int):
+def __evaluate_expressions(data) -> tuple[dict, int]:
     registers = collections.defaultdict(lambda: 0)
     max_value = -sys.maxsize - 1
     for line in data.splitlines():

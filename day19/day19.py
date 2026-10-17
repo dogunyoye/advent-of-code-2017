@@ -15,7 +15,7 @@ def __build_route(data) -> dict:
     return route
 
 
-def find_route(data) -> (str, int):
+def find_route(data) -> tuple[str, int]:
     route = __build_route(data)
     current_pos = list(filter(lambda coord: coord[0] == 0, route.keys()))[0]
     direction = 0

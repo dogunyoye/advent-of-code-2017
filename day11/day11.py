@@ -49,7 +49,7 @@ def __distance(start, end) -> int:
     return max(abs(du), abs(dv))
 
 
-def __find_goal(data) -> (set, tuple):
+def __find_goal(data) -> tuple[set, tuple]:
     current_position = (0, 0)
     goal = (0, 0)
     positions = set()

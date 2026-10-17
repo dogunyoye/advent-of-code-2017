@@ -64,7 +64,7 @@ def __transformations(image) -> list:
     return transforms
 
 
-def __split_image(image) -> (list, int):
+def __split_image(image) -> tuple[list, int]:
     limit = max(image.keys(), key=lambda item: item[1])[1] + 1
     if limit == 2 or limit == 3:
         return [image], 1
