@@ -1,7 +1,21 @@
 import os.path
-from sympy.ntheory import isprime
 
 DATA = os.path.join(os.path.dirname(__file__), 'day23.txt')
+
+
+def _is_prime(value) -> bool:
+    if value < 2:
+        return False
+    if value % 2 == 0:
+        return value == 2
+
+    divisor = 3
+    while divisor * divisor <= value:
+        if value % divisor == 0:
+            return False
+        divisor += 2
+
+    return True
 
 
 def _set(registers, register, value):
@@ -84,7 +98,7 @@ def find_value_left_in_register_h() -> int:
 
     h = 0
     for i in range(106500, 123501, 17):
-        if not isprime(i):
+        if not _is_prime(i):
             h += 1
 
     return h
