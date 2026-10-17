@@ -1,3 +1,14 @@
+# Advent of Code puzzle inputs are personal; don't commit them
 day*/*.txt
-*.xml
+
+# Byte-compiled files and caches
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE / editor files
+.idea/
 *.iml
