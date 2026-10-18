@@ -108,9 +108,9 @@ class TestExamples(unittest.TestCase):
         self.assertEqual(
             [
                 find_manhattan_distance_to_access_point(str(n))
-                for n in (12, 23, 1024)
+                for n in (1, 12, 23, 1024)
             ],
-            [3, 2, 31],
+            [0, 3, 2, 31],
         )
 
     def test_day04(self):
@@ -260,10 +260,10 @@ class TestExamples(unittest.TestCase):
         self.assertEqual(calculate_number_of_present_regions("flqrgnkx"), 1242)
 
     def test_day15(self):
-        import day15.day15 as day15
+        from day15 import day15
 
-        generator = getattr(day15, "__generator")
-        count_matching = getattr(day15, "__count_matching_pairs")
+        generator = day15._generator
+        count_matching = day15._count_matching_pairs
 
         def first_values(seed, factor, multiple=1):
             sequence = generator(seed, factor, multiple)
@@ -355,10 +355,10 @@ class TestExamples(unittest.TestCase):
     def test_day21(self):
         # The public functions are pinned to 5/18 iterations, whereas the
         # official example documents its result after 2 iterations, so test
-        # the parameterised helper directly. getattr avoids name mangling.
-        import day21.day21 as day21
+        # the parameterised helper directly.
+        from day21 import day21
 
-        solve = getattr(day21, "__number_of_pixels_on_after_n_iterations")
+        solve = day21._number_of_pixels_on_after_n_iterations
         data = "../.# => ##./#../...\n.#./..#/### => #..#/..../..../#..#"
         self.assertEqual(solve(data, 2), 12)
 
