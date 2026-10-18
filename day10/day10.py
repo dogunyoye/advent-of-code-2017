@@ -4,16 +4,12 @@ DATA = os.path.join(os.path.dirname(__file__), 'day10.txt')
 
 
 def calculate_product_of_first_two_numbers(data) -> int:
-    lengths = [eval(i) for i in data.split(",")]
-    skip, idx = 0, 0
-    nums = []
-    for i in range(0, 256):
-        nums.append(i)
+    lengths = [int(i) for i in data.split(",")]
+    idx = 0
+    nums = list(range(256))
 
-    for length in lengths:
-        sublist = []
-        for i in range(idx, idx + length):
-            sublist.append(nums[i % len(nums)])
+    for skip, length in enumerate(lengths):
+        sublist = [nums[i % len(nums)] for i in range(idx, idx + length)]
         sublist.reverse()
 
         for count, i in enumerate(range(idx, idx + length)):
@@ -26,24 +22,17 @@ def calculate_product_of_first_two_numbers(data) -> int:
 
 
 def find_knot_hash(data) -> str:
-    ascii_data = []
+    ascii_data = [ord(c) for c in data]
     extra_data = [17, 31, 73, 47, 23]
     rounds = 64
-
-    for i in range(0, len(data)):
-        ascii_data.append(ord(data[i]))
     ascii_data.extend(extra_data)
 
     skip, idx = 0, 0
-    nums = []
-    for i in range(0, 256):
-        nums.append(i)
+    nums = list(range(256))
 
     while rounds != 0:
         for length in ascii_data:
-            sublist = []
-            for i in range(idx, idx + length):
-                sublist.append(nums[i % len(nums)])
+            sublist = [nums[i % len(nums)] for i in range(idx, idx + length)]
             sublist.reverse()
 
             for count, i in enumerate(range(idx, idx + length)):
@@ -63,7 +52,7 @@ def find_knot_hash(data) -> str:
             value ^= block[j]
         dense_hash.append(value)
 
-    for i in range(0, len(dense_hash)):
+    for i in range(len(dense_hash)):
         s = format(dense_hash[i], 'x')
         if len(s) == 1:
             s = '0' + s

@@ -40,22 +40,15 @@ def _mul(registers, register, value):
 
 
 def _jnz(instruction_pointer, registers, value0, value1) -> int:
-    if value0.isalpha():
-        v0 = registers[value0]
-    else:
-        v0 = int(value0)
-
-    if value1.isalpha():
-        v1 = registers[value1]
-    else:
-        v1 = int(value1)
+    v0 = registers[value0] if value0.isalpha() else int(value0)
+    v1 = registers[value1] if value1.isalpha() else int(value1)
 
     if v0 != 0:
         return instruction_pointer + v1
     return instruction_pointer + 1
 
 
-def __initialise_registers() -> dict:
+def _initialise_registers() -> dict:
     registers = {}
     for r in range(ord('a'), ord('i')):
         registers[chr(r)] = 0
@@ -63,7 +56,7 @@ def __initialise_registers() -> dict:
 
 
 def find_number_of_times_mul_is_invoked(data) -> int:
-    registers = __initialise_registers()
+    registers = _initialise_registers()
     instructions = data.splitlines()
     instruction_pointer, mul_count = 0, 0
 

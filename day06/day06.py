@@ -4,11 +4,11 @@ import sys
 DATA = os.path.join(os.path.dirname(__file__), 'day06.txt')
 
 
-def __find_cycle(data, seen_count) -> int:
-    blocks = [eval(i) for i in data.split("\t")]
+def _find_cycle(data, seen_count) -> int:
+    blocks = [int(i) for i in data.split("\t")]
     seen, cycle_count = set(), 0
     prev_cycles, cycles = 0, 0
-    seen_config = tuple()
+    seen_config: tuple = ()
 
     while True:
         largest_num, largest_idx = -sys.maxsize - 1, -sys.maxsize - 1
@@ -19,7 +19,7 @@ def __find_cycle(data, seen_count) -> int:
 
         blocks[largest_idx] = 0
 
-        for i in range(0, largest_num):
+        for i in range(largest_num):
             blocks[(largest_idx + i + 1) % len(blocks)] += 1
 
         cycles += 1
@@ -42,11 +42,11 @@ def __find_cycle(data, seen_count) -> int:
 
 
 def find_number_of_cycles_before_duplicate(data) -> int:
-    return __find_cycle(data, 1)
+    return _find_cycle(data, 1)
 
 
 def find_cycle_length(data) -> int:
-    return __find_cycle(data, 2)
+    return _find_cycle(data, 2)
 
 
 def main() -> int:

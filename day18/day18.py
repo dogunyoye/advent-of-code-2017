@@ -2,10 +2,9 @@ import os.path
 from collections import deque
 
 DATA = os.path.join(os.path.dirname(__file__), 'day18.txt')
-last_played = 0
 
 
-class Program(object):
+class Program:
 
     def __init__(self, registers, instructions):
         self.registers = registers
@@ -38,12 +37,7 @@ class Program(object):
                     _jgz(self.instruction_pointer, self.registers, parts[1], parts[2]))
                 continue
             self.instruction_pointer += 1
-        raise Exception("Program out of bounds")
-
-
-def _snd(registers, value):
-    global last_played
-    last_played = registers[value]
+        raise ValueError("Program out of bounds")
 
 
 def _set(registers, register, value):
@@ -74,28 +68,16 @@ def _mod(registers, register, value):
     registers[register] %= int(value)
 
 
-def _rcv() -> int:
-    global last_played
-    return last_played
-
-
 def _jgz(instruction_pointer, registers, value0, value1) -> int:
-    if value0.isalpha():
-        v0 = registers[value0]
-    else:
-        v0 = int(value0)
-
-    if value1.isalpha():
-        v1 = registers[value1]
-    else:
-        v1 = int(value1)
+    v0 = registers[value0] if value0.isalpha() else int(value0)
+    v1 = registers[value1] if value1.isalpha() else int(value1)
 
     if v0 > 0:
         return instruction_pointer + v1
     return instruction_pointer + 1
 
 
-def __initialise_registers(data) -> dict:
+def _initialise_registers(data) -> dict:
     registers = {}
     for line in data.splitlines():
         parts = line.split(" ")
@@ -106,17 +88,18 @@ def __initialise_registers(data) -> dict:
 
 
 def find_value_of_recovered_frequency(data) -> int:
-    registers = __initialise_registers(data)
+    registers = _initialise_registers(data)
     instructions = data.splitlines()
     instruction_pointer = 0
+    last_played = 0
     while instruction_pointer < len(instructions):
         parts = instructions[instruction_pointer].split(" ")
         instruction = parts[0]
         if instruction == "snd":
-            _snd(registers, parts[1])
+            last_played = registers[parts[1]]
         elif instruction == "rcv":
             if registers[parts[1]] != 0:
-                return _rcv()
+                return last_played
         elif instruction == "set":
             _set(registers, parts[1], parts[2])
         elif instruction == "add":
@@ -134,8 +117,8 @@ def find_value_of_recovered_frequency(data) -> int:
 
 
 def find_number_of_times_program_one_sent_a_value(data) -> int:
-    program0_registers = __initialise_registers(data)
-    program1_registers = __initialise_registers(data)
+    program0_registers = _initialise_registers(data)
+    program1_registers = _initialise_registers(data)
 
     program0_registers['p'] = 0
     program1_registers['p'] = 1

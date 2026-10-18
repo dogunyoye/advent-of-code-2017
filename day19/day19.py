@@ -3,21 +3,19 @@ import os.path
 DATA = os.path.join(os.path.dirname(__file__), 'day19.txt')
 
 
-def __build_route(data) -> dict:
+def _build_route(data) -> dict:
     route = {}
-    depth = 0
     track = {'|', '-', '+'}
-    for line in data.splitlines():
-        for j in range(0, len(line)):
+    for depth, line in enumerate(data.splitlines()):
+        for j in range(len(line)):
             if line[j].isalpha() or line[j] in track:
                 route[(depth, j)] = line[j]
-        depth += 1
     return route
 
 
 def find_route(data) -> tuple[str, int]:
-    route = __build_route(data)
-    current_pos = list(filter(lambda coord: coord[0] == 0, route.keys()))[0]
+    route = _build_route(data)
+    current_pos = next(coord for coord in route if coord[0] == 0)
     direction = 0
     neighbors = [(0, -1), (-1, 0), (0, 1), (1, 0)]
 

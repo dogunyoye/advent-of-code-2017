@@ -5,34 +5,41 @@ import sys
 DATA = os.path.join(os.path.dirname(__file__), 'day08.txt')
 
 
-def __evaluate_expressions(data) -> tuple[dict, int]:
-    registers = collections.defaultdict(lambda: 0)
+_COMPARISONS = {
+    ">": lambda left, right: left > right,
+    "<": lambda left, right: left < right,
+    ">=": lambda left, right: left >= right,
+    "<=": lambda left, right: left <= right,
+    "==": lambda left, right: left == right,
+    "!=": lambda left, right: left != right,
+}
+
+
+def _evaluate_expressions(data) -> tuple[dict, int]:
+    registers: dict = collections.defaultdict(lambda: 0)
     max_value = -sys.maxsize - 1
     for line in data.splitlines():
-        parts = line.split(" ")
+        register, operation, amount, _, condition_register, comparison, condition_value = (
+            line.split(" "))
 
-        if parts[1] == "dec":
-            parts[1] = "-"
-        else:
-            parts[1] = "+"
+        if _COMPARISONS[comparison](registers[condition_register], int(condition_value)):
+            if operation == "inc":
+                registers[register] += int(amount)
+            else:
+                registers[register] -= int(amount)
 
-        conditional = " ".join([parts[4], parts[5], parts[6]])
-        action = " ".join([parts[0], parts[1], parts[2]])
-
-        if eval(conditional, {}, registers):
-            registers[parts[0]] = eval(action, {}, registers)
         max_value = max(max_value, max(registers.values()))
 
     return registers, max_value
 
 
 def find_largest_value_in_register(data) -> int:
-    registers, _ = __evaluate_expressions(data)
+    registers, _ = _evaluate_expressions(data)
     return max(registers.values())
 
 
 def find_largest_value_during_process(data) -> int:
-    _, max_value = __evaluate_expressions(data)
+    _, max_value = _evaluate_expressions(data)
     return max_value
 
 

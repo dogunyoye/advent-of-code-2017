@@ -1,4 +1,4 @@
-from collections import defaultdict, Counter
+from collections import Counter, defaultdict
 
 
 # HARDCODED BLUEPRINT INSTRUCTIONS
@@ -6,7 +6,7 @@ def find_diagnostic_checksum() -> int:
     steps = 12317297
     state = 'A'
     current_position = 0
-    tape = defaultdict(lambda: 0)
+    tape: defaultdict = defaultdict(lambda: 0)
 
     while steps != 0:
         if state == 'A':
@@ -28,10 +28,7 @@ def find_diagnostic_checksum() -> int:
                 current_position += 1
                 state = 'F'
         elif state == 'C':
-            if tape[current_position] == 0:
-                state = 'C'
-            else:
-                state = 'A'
+            state = 'C' if tape[current_position] == 0 else 'A'
             tape[current_position] = 1
             current_position -= 1
         elif state == 'D':
@@ -53,10 +50,7 @@ def find_diagnostic_checksum() -> int:
                 current_position += 1
                 state = 'B'
         elif state == 'F':
-            if tape[current_position] == 0:
-                state = 'C'
-            else:
-                state = 'E'
+            state = 'C' if tape[current_position] == 0 else 'E'
             tape[current_position] = 0
             current_position += 1
         steps -= 1

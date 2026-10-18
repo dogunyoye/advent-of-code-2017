@@ -16,10 +16,11 @@ ROOT = Path(__file__).resolve().parent
 
 
 def available_days():
-    days = []
-    for entry in ROOT.glob("day[0-9][0-9]"):
-        if entry.is_dir() and entry.name[3:].isdigit():
-            days.append(int(entry.name[3:]))
+    days = [
+        int(entry.name[3:])
+        for entry in ROOT.glob("day[0-9][0-9]")
+        if entry.is_dir() and entry.name[3:].isdigit()
+    ]
     return sorted(days)
 
 

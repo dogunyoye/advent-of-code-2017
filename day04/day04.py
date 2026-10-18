@@ -23,20 +23,8 @@ def find_valid_passphrases(data) -> int:
 def find_valid_passphrases_with_extra_security(data) -> int:
     result = 0
     for line in data.splitlines():
-        words = line.split(" ")
-        valid = True
-        for i in range(0, len(words)-1):
-            first_bytes = sorted(words[i].encode('utf-8'))
-            for j in range(i+1, len(words)):
-                second_bytes = sorted(words[j].encode('utf-8'))
-                if first_bytes == second_bytes:
-                    valid = False
-                    break
-
-            if not valid:
-                break
-
-        if valid:
+        signatures = ["".join(sorted(word)) for word in line.split(" ")]
+        if len(signatures) == len(set(signatures)):
             result += 1
 
     return result

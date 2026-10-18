@@ -20,7 +20,7 @@ def calculate_spreadsheet_checksum_part_two(data) -> int:
     result = 0
     for line in data.splitlines():
         nums = line.split("\t")
-        for i in range(0, len(nums)):
+        for i in range(len(nums)):
             found = False
             first = int(nums[i])
             for j in range(i+1, len(nums)):

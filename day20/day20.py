@@ -6,7 +6,7 @@ from itertools import groupby
 DATA = os.path.join(os.path.dirname(__file__), 'day20.txt')
 
 
-class Particle(object):
+class Particle:
 
     def __init__(self, pid, position, velocity, acceleration):
         self.pid = pid
@@ -27,7 +27,7 @@ class Particle(object):
         return abs(self.position[0]) + abs(self.position[1]) + abs(self.position[2])
 
 
-def __build_particles(data) -> list[Particle]:
+def _build_particles(data) -> list[Particle]:
     particles = []
     for i, line in enumerate(data.splitlines()):
         parts = re.findall(
@@ -41,7 +41,7 @@ def __build_particles(data) -> list[Particle]:
 
 
 def find_particle_closest_to_origin_for_longest(data) -> int:
-    particles = __build_particles(data)
+    particles = _build_particles(data)
     closest_particles = []
 
     # "magic number" programming
@@ -55,14 +55,14 @@ def find_particle_closest_to_origin_for_longest(data) -> int:
         for p in particles:
             p.move()
             distances[p.pid] = p.distance_to_origin()
-        closest_particles.append(min(distances, key=distances.get))
+        closest_particles.append(min(distances, key=lambda pid: distances[pid]))
         moves -= 1
 
     return Counter(closest_particles).most_common(1)[0][0]
 
 
 def find_number_of_particles_left(data) -> int:
-    particles = __build_particles(data)
+    particles = _build_particles(data)
     collided = []
 
     # "magic number" programming
@@ -76,12 +76,13 @@ def find_number_of_particles_left(data) -> int:
             if p.pid not in collided:
                 p.move()
                 positions[p.pid] = p.position
-        g = groupby(sorted(positions, key=positions.get), key=positions.get)
-        g = [list(x) for _, x in g]
-        for group in g:
-            if len(group) >= 2:
-                for pid in group:
-                    collided.append(pid)
+        groups = groupby(
+            sorted(positions, key=lambda pid: positions[pid]),
+            key=lambda pid: positions[pid])
+        for _, group in groups:
+            values = list(group)
+            if len(values) >= 2:
+                collided.extend(values)
         moves -= 1
 
     return len(particles) - len(collided)

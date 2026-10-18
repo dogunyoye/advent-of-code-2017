@@ -11,10 +11,10 @@ class Direction(Enum):
     WEST = 4
 
 
-def __build_grid(lines) -> dict:
+def _build_grid(lines) -> dict:
     grid = {}
     for i, line in enumerate(lines):
-        for j in range(0, len(line)):
+        for j in range(len(line)):
             grid[(i, j)] = line[j]
     return grid
 
@@ -29,29 +29,29 @@ MOVEMENTS = {
 }
 
 
-def __turn_left(facing) -> Direction:
+def _turn_left(facing) -> Direction:
     index = DIRECTIONS.index(facing)
     return DIRECTIONS[(index - 1) % len(DIRECTIONS)]
 
 
-def __turn_right(facing) -> Direction:
+def _turn_right(facing) -> Direction:
     index = DIRECTIONS.index(facing)
     return DIRECTIONS[(index + 1) % len(DIRECTIONS)]
 
 
-def __reverse(facing) -> Direction:
+def _reverse(facing) -> Direction:
     index = DIRECTIONS.index(facing)
     return DIRECTIONS[(index + 2) % len(DIRECTIONS)]
 
 
-def __move(current_position, facing) -> tuple[int, int]:
+def _move(current_position, facing) -> tuple[int, int]:
     row, column = MOVEMENTS[facing]
     return current_position[0] + row, current_position[1] + column
 
 
 def find_number_of_bursts_that_infect_a_node(data) -> int:
     lines = data.splitlines()
-    grid = __build_grid(lines)
+    grid = _build_grid(lines)
     current_position, current_direction = (len(lines) // 2, len(lines[0]) // 2), Direction.NORTH
     bursts, infection_bursts = 10000, 0
 
@@ -59,9 +59,9 @@ def find_number_of_bursts_that_infect_a_node(data) -> int:
         node_status = '.'
         if current_position in grid and grid[current_position] == '#':
             node_status = '#'
-            current_direction = __turn_right(current_direction)
+            current_direction = _turn_right(current_direction)
         else:
-            current_direction = __turn_left(current_direction)
+            current_direction = _turn_left(current_direction)
 
         if node_status == '.':
             node_status = '#'
@@ -70,14 +70,14 @@ def find_number_of_bursts_that_infect_a_node(data) -> int:
             node_status = '.'
 
         grid[current_position] = node_status
-        current_position = __move(current_position, current_direction)
+        current_position = _move(current_position, current_direction)
         bursts -= 1
     return infection_bursts
 
 
 def find_number_of_bursts_that_infect_a_node_with_new_rules(data) -> int:
     lines = data.splitlines()
-    grid = __build_grid(lines)
+    grid = _build_grid(lines)
     current_position, current_direction = (len(lines) // 2, len(lines[0]) // 2), Direction.NORTH
     bursts, infection_bursts = 10000000, 0
 
@@ -88,19 +88,19 @@ def find_number_of_bursts_that_infect_a_node_with_new_rules(data) -> int:
 
         if node_status == '.':
             node_status = 'W'
-            current_direction = __turn_left(current_direction)
+            current_direction = _turn_left(current_direction)
         elif node_status == 'W':
             node_status = '#'
             infection_bursts += 1
         elif node_status == '#':
             node_status = 'F'
-            current_direction = __turn_right(current_direction)
+            current_direction = _turn_right(current_direction)
         elif node_status == 'F':
             node_status = '.'
-            current_direction = __reverse(current_direction)
+            current_direction = _reverse(current_direction)
 
         grid[current_position] = node_status
-        current_position = __move(current_position, current_direction)
+        current_position = _move(current_position, current_direction)
         bursts -= 1
     return infection_bursts
 

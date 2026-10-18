@@ -5,7 +5,7 @@ DATA = os.path.join(os.path.dirname(__file__), 'day01.txt')
 
 def find_captcha_solution(data) -> int:
     result = 0
-    for i in range(0, len(data)):
+    for i in range(len(data)):
         if data[i] == data[(i + 1) % len(data)]:
             result += int(data[i])
     return result
@@ -13,7 +13,7 @@ def find_captcha_solution(data) -> int:
 
 def find_captcha_solution_part_two(data) -> int:
     result, jump = 0, int(len(data)/2)
-    for i in range(0, len(data)):
+    for i in range(len(data)):
         if data[i] == data[(i + jump) % len(data)]:
             result += int(data[i])
     return result

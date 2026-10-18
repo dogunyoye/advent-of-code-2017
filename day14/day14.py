@@ -6,29 +6,28 @@ from day10.day10 import find_knot_hash
 DATA = os.path.join(os.path.dirname(__file__), 'day14.txt')
 
 
-def __build_grid(data) -> dict:
-    depth = 0
+def _build_grid(data) -> dict:
     grid = {}
 
-    for i in range(0, 128):
-        key = data + "-" + str(i)
+    for depth in range(128):
+        key = data + "-" + str(depth)
         knot_hash = find_knot_hash(key)
         knot_hash_binary = ""
-        for j in range(0, len(knot_hash)):
+        for j in range(len(knot_hash)):
             binary = format(int(knot_hash[j], 16), "b")
             pad = (4 - len(binary)) * "0"
             binary = pad + binary
             knot_hash_binary += binary
 
-        for k in range(0, len(knot_hash_binary)):
+        for k in range(len(knot_hash_binary)):
             grid[(depth, k)] = knot_hash_binary[k]
-        depth += 1
 
     return grid
 
 
-def __bfs(start, grid, group_number, group) -> set:
-    queue, visited = deque(), set()
+def _bfs(start, grid, group_number, group) -> set:
+    queue: deque = deque()
+    visited: set = set()
     queue.append(start)
     visited.add(start)
 
@@ -47,17 +46,17 @@ def __bfs(start, grid, group_number, group) -> set:
 
 
 def calculate_number_of_used_squares(data) -> int:
-    grid = __build_grid(data)
+    grid = _build_grid(data)
     return Counter(grid.values())['1']
 
 
 def calculate_number_of_present_regions(data) -> int:
-    grid = __build_grid(data)
-    queue = deque()
-    group = {}
+    grid = _build_grid(data)
+    queue: deque = deque()
+    group: dict = {}
 
-    for i in range(0, 128):
-        for j in range(0, 128):
+    for i in range(128):
+        for j in range(128):
             pos = (i, j)
             if grid[pos] == '1':
                 queue.append(pos)
@@ -66,7 +65,7 @@ def calculate_number_of_present_regions(data) -> int:
 
     while len(queue) != 0:
         pos = queue.popleft()
-        visited = __bfs(pos, grid, grid_number, group)
+        visited = _bfs(pos, grid, grid_number, group)
         for v in visited:
             if v in queue:
                 queue.remove(v)

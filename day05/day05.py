@@ -5,7 +5,7 @@ DATA = os.path.join(os.path.dirname(__file__), 'day05.txt')
 
 def find_number_of_steps_to_reach_exit(data) -> int:
     result, current_idx = 0, 0
-    instructions = [eval(i) for i in data.splitlines()]
+    instructions = [int(i) for i in data.splitlines()]
 
     while current_idx < len(instructions):
         offset = instructions[current_idx]
@@ -18,7 +18,7 @@ def find_number_of_steps_to_reach_exit(data) -> int:
 
 def find_number_of_steps_to_reach_exit_part_two(data) -> int:
     result, current_idx = 0, 0
-    instructions = [eval(i) for i in data.splitlines()]
+    instructions = [int(i) for i in data.splitlines()]
 
     while current_idx < len(instructions):
         offset = instructions[current_idx]

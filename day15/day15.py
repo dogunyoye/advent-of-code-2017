@@ -12,12 +12,12 @@ PART_TWO_MULTIPLE_A = 4
 PART_TWO_MULTIPLE_B = 8
 
 
-def __seeds(data) -> tuple[int, int]:
+def _seeds(data) -> tuple[int, int]:
     lines = data.splitlines()
     return int(lines[0].split(" ")[-1]), int(lines[1].split(" ")[-1])
 
 
-def __generator(seed, factor, multiple=1):
+def _generator(seed, factor, multiple=1):
     value = seed
     while True:
         value = (value * factor) % MODULUS
@@ -25,10 +25,10 @@ def __generator(seed, factor, multiple=1):
             yield value
 
 
-def __count_matching_pairs(data, pairs, multiple_a=1, multiple_b=1) -> int:
-    seed_a, seed_b = __seeds(data)
-    generator_a = __generator(seed_a, GENERATOR_A_FACTOR, multiple_a)
-    generator_b = __generator(seed_b, GENERATOR_B_FACTOR, multiple_b)
+def _count_matching_pairs(data, pairs, multiple_a=1, multiple_b=1) -> int:
+    seed_a, seed_b = _seeds(data)
+    generator_a = _generator(seed_a, GENERATOR_A_FACTOR, multiple_a)
+    generator_b = _generator(seed_b, GENERATOR_B_FACTOR, multiple_b)
 
     count = 0
     for _ in range(pairs):
@@ -42,11 +42,11 @@ def __count_matching_pairs(data, pairs, multiple_a=1, multiple_b=1) -> int:
 
 
 def calculate_final_count(data) -> int:
-    return __count_matching_pairs(data, TOTAL_PAIRS)
+    return _count_matching_pairs(data, TOTAL_PAIRS)
 
 
 def calculate_final_count_part_two(data) -> int:
-    return __count_matching_pairs(
+    return _count_matching_pairs(
         data, 5_000_000, PART_TWO_MULTIPLE_A, PART_TWO_MULTIPLE_B
     )
 

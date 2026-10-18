@@ -3,13 +3,13 @@ import os.path
 DATA = os.path.join(os.path.dirname(__file__), 'day09.txt')
 
 
-def __collect_groups(data) -> dict:
+def _collect_groups(data) -> dict:
     groups = {}
     for line_idx, line in enumerate(data.splitlines()):
         stack = []
         canceled = False
         garbage = False
-        for i in range(0, len(line)):
+        for i in range(len(line)):
 
             if canceled:
                 canceled = False
@@ -34,11 +34,11 @@ def __collect_groups(data) -> dict:
     return groups
 
 
-def __is_valid_group(segment) -> bool:
+def _is_valid_group(segment) -> bool:
     garbage_opened, garbage_closed = False, False
     skip = False
 
-    for i in range(0, len(segment)):
+    for i in range(len(segment)):
         if skip:
             skip = False
             continue
@@ -52,21 +52,15 @@ def __is_valid_group(segment) -> bool:
         elif segment[i] == '>':
             garbage_closed = True
 
-    if not garbage_opened and not garbage_closed:
-        return True
-
-    if garbage_opened and garbage_closed:
-        return True
-
-    return False
+    return garbage_opened == garbage_closed
 
 
 def calculate_total_score(data) -> int:
     score = 0
     lines = data.splitlines()
-    for k, v in __collect_groups(data).items():
+    for k, v in _collect_groups(data).items():
         segment = lines[k[0]][k[1]:k[2] + 1]
-        if __is_valid_group(segment):
+        if _is_valid_group(segment):
             score += v
 
     return score
@@ -76,7 +70,7 @@ def find_non_canceled_characters_within_garbage(data) -> int:
     counting, skip = False, False
     count, result = 0, 0
 
-    for i in range(0, len(data)):
+    for i in range(len(data)):
         if skip:
             skip = False
             continue
