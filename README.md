@@ -57,13 +57,26 @@ The example-based tests run anywhere. The full-input tests run automatically
 when the corresponding `dayNN/dayNN.txt` input is present and are skipped
 otherwise, so CI stays green without the private inputs.
 
+## Linting and type checking
+
+Configuration lives in [`pyproject.toml`](pyproject.toml). With `ruff` and
+`mypy` installed:
+
+```bash
+ruff check .
+mypy
+```
+
+Both run in CI alongside the tests.
+
 ## Structure
 
 ```
 .
 ├── day01/ … day25/   # one package per day (solution + input)
 ├── tests/            # unittest suite (examples + golden answers)
-└── run.py            # runner for all or selected days
+├── run.py            # runner for all or selected days
+└── pyproject.toml    # ruff + mypy configuration
 ```
 
 ## License

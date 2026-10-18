@@ -1,0 +1,30 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["venv", ".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E4",     # pycodestyle import errors
+    "E7",     # pycodestyle statement errors
+    "E9",     # pycodestyle runtime errors
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "PIE",    # flake8-pie
+    "PERF",   # perflint
+    "TRY",    # flake8-tryceratops
+    "RUF",    # ruff-specific
+    "PLR0402", # import-alias
+    "PLW0602", # global-variable-not-assigned
+]
+ignore = [
+    "TRY003", # raise-vanilla-args: custom exception classes are overkill here
+]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["day*", "run.py", "tests"]
+ignore_missing_imports = true
